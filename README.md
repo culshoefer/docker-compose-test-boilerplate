@@ -1,3 +1,6 @@
+# What is this?
+A small boilerplate project to discuss the best way of setting up an example application with docker, docker-compose etc.
+
 # Setup
 We require you to install [Docker-CE](https://docs.docker.com/engine/installation/linux/docker-ce/ubuntu/#os-requirements) and [docker-compose](https://docs.docker.com/compose/install/) before starting to build.
 

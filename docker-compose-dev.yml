@@ -1,0 +1,12 @@
+version: "3.3"
+services:
+  api:
+    image: culshoefer/docker-compose-boilerplate-dev
+    volumes:
+        - .:/usr/src/app/test-results:cached
+    build:
+        dockerfile: application/Dockerfile.dev
+        args:
+            - REQUIREMENTS_FILE=requirements.dev.txt
+    environment:
+        - DEBUG=true

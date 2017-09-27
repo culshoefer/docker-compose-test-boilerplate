@@ -1,0 +1,26 @@
+FROM python:3.6
+
+ARG REQUIREMENTS_FILE
+
+MAINTAINER Christoph Ulshoefer <c@culshoefer.com>       
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY application/requirements.txt ./
+COPY application/$REQUIREMENTS_FILE ./
+RUN pip install --no-cache-dir -r $REQUIREMENTS_FILE
+RUN apt-get autoremove
+
+WORKDIR /usr/src/app
+
+COPY application/manage.py /usr/src/app/manage.py
+COPY application/.coveragerc /usr/src/app
+COPY application/application /usr/src/app/application
+COPY application/tests /usr/src/app/tests
+COPY application/runtests.sh /usr/src/app
+COPY application/rundjangotests.sh /usr/src/app
+RUN mkdir -p /usr/src/app/test-results
+RUN mkdir -p /usr/src/app/test-results/django-cover-html
+ENTRYPOINT ["./runtests.sh"]

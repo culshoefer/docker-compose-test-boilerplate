@@ -1,0 +1,48 @@
+version: "3.3"
+services:
+  api:
+    expose:
+        - "8000"
+    links:
+        - redis:redis
+        - postgres:postgres
+    build:
+        context: .
+    env_file:
+        - env
+
+  redis:
+    image: redis:latest
+    expose:
+        - "6379"
+
+  nginx:
+    build: ./nginx/
+    ports:
+        - "80:80"
+
+  postgres:
+    image: postgres:latest
+    volumes:
+        - type: volume
+          source: dbdata
+          target: /data
+          volume:
+            nocopy: true
+        - ./postgres/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d
+        - ./backups/postgresql:/backup
+    env_file:
+        - env
+    expose:
+        - "5432"
+
+  data:
+    restart: always
+    image: alpine
+    volumes:
+        - "/var/run/postgres/postgres.sock:/var/run/postgres/postgres.sock"
+        - "dbdata:/var/lib/postgresql"
+    command: "true"
+
+volumes:
+  dbdata:

@@ -1,0 +1,10 @@
+version: "3.3"
+services:
+  api:
+    image: culshoefer/docker-compose-boilerplate-prod
+    build:
+      dockerfile: application/Dockerfile
+      args:
+            - REQUIREMENTS_FILE=requirements.txt
+    environment:
+        - DEBUG=false
